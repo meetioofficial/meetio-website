@@ -281,24 +281,55 @@ window.submitFeedback = async function(e) {
 }
 
 // Video controls - Play/Pause functionality
+// Video controls - Play/Pause functionality
 const demoVideo = document.getElementById('demoVideo');
 const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
 
 if (demoVideo && videoPlayPauseBtn) {
-    videoPlayPauseBtn.addEventListener('click', function() {
+    // Remove any existing event listeners by replacing with a new one
+    const newBtn = videoPlayPauseBtn.cloneNode(true);
+    videoPlayPauseBtn.parentNode.replaceChild(newBtn, videoPlayPauseBtn);
+    
+    // Update the reference
+    const updatedBtn = document.getElementById('videoPlayPauseBtn');
+    
+    updatedBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
         if (demoVideo.paused) {
-            demoVideo.play();
-            videoPlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            demoVideo.play()
+                .then(() => {
+                    updatedBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                })
+                .catch(error => {
+                    console.log('Play failed:', error);
+                    updatedBtn.innerHTML = '<i class="fas fa-play"></i>';
+                });
         } else {
             demoVideo.pause();
-            videoPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            updatedBtn.innerHTML = '<i class="fas fa-play"></i>';
         }
     });
     
     // Update button icon when video ends
     demoVideo.addEventListener('ended', function() {
-        videoPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        updatedBtn.innerHTML = '<i class="fas fa-play"></i>';
     });
+    
+    // Update button icon if video is paused by other means
+    demoVideo.addEventListener('pause', function() {
+        updatedBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
+    
+    demoVideo.addEventListener('play', function() {
+        updatedBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    });
+    
+    // Initial check - if video is already playing, set pause icon
+    if (!demoVideo.paused) {
+        updatedBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    }
 }
 
 // Confetti function
