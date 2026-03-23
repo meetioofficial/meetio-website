@@ -358,14 +358,46 @@ document.addEventListener('keydown', function(e) {
 // Update footer year
 document.querySelector('.current-year').textContent = new Date().getFullYear();
 
-// Scroll effect for header - FIXED: Makes header sticky and changes background when scrolling
+// Header Hide on Scroll - with direction detection
+let lastScrollTop = 0;
+let scrollTimeout;
+const header = document.querySelector('.header');
+
 window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Clear timeout
+    clearTimeout(scrollTimeout);
+    
+    // Determine scroll direction
+    if (currentScroll > lastScrollTop && currentScroll > 100) {
+        // Scrolling down - hide header
+        header.classList.add('hide');
+        header.classList.remove('scrolled');
+    } else if (currentScroll < lastScrollTop) {
+        // Scrolling up - show header
+        header.classList.remove('hide');
+        // Add scrolled class if not at top
+        if (currentScroll > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    } else if (currentScroll <= 50) {
+        // At the top - show header without scrolled class
+        header.classList.remove('hide');
         header.classList.remove('scrolled');
     }
+    
+    // Set timeout to show header when scrolling stops (optional)
+    scrollTimeout = setTimeout(() => {
+        if (currentScroll > 100 && !header.classList.contains('hide')) {
+            // Optional: hide after stop scrolling? 
+            // Keep current behavior
+        }
+    }, 150);
+    
+    lastScrollTop = currentScroll;
 });
 
 // Auto-play video on hero
@@ -416,7 +448,6 @@ window.closeFeedbackModal = closeFeedbackModal;
 window.submitFeedback = submitFeedback;
 
 // Initial header state
-const header = document.querySelector('.header');
 if (window.scrollY > 50) {
     header.classList.add('scrolled');
 }
