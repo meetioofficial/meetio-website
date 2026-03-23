@@ -52,11 +52,13 @@
         </div>
     </header>
 
-    <!-- Hero Section with Auto-playing Video Background -->
+    <!-- Hero Section with Friends Meeting Video Background -->
     <section class="hero" id="home">
         <div class="hero-video-container">
-            <video autoplay muted loop playsinline class="hero-video">
-                <source src="https://i.imgur.com/M9dfCqD.mp4" type="video/mp4">
+            <video autoplay muted loop playsinline class="hero-video" id="heroVideo">
+                <source src="https://cdn.pixabay.com/video/2023/05/18/164949-828259816_large.mp4" type="video/mp4">
+                <!-- Fallback video of friends meeting - using Pixabay free video -->
+                <source src="https://cdn.pixabay.com/video/2022/08/19/128362-738115399_large.mp4" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
         </div>
@@ -97,33 +99,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="hero-phone">
-                    <div class="phone-mockup floating">
-                        <div class="phone-screen">
-                            <div class="app-demo-preview">
-                                <div class="demo-header">
-                                    <span class="demo-mood">🍕 Foodie Mode</span>
-                                </div>
-                                <div class="demo-card">
-                                    <div class="demo-card-image"></div>
-                                    <div class="demo-card-info">
-                                        <h4>Pasta Palace</h4>
-                                        <div class="demo-rating">★★★★☆ 4.5</div>
-                                        <div class="demo-tags">
-                                            <span>Italian</span>
-                                            <span>$$</span>
-                                            <span>2.3km</span>
-                                        </div>
-                                    </div>
-                                    <div class="demo-actions">
-                                        <span class="demo-like"><i class="fas fa-heart"></i></span>
-                                        <span class="demo-dislike"><i class="fas fa-times"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Floating phone removed -->
             </div>
         </div>
     </section>
@@ -317,7 +293,7 @@
         </div>
     </section>
 
-    <!-- Live Demo Preview -->
+    <!-- Live Demo Preview with Play/Pause Button -->
     <section class="live-demo">
         <div class="container">
             <div class="live-demo-content">
@@ -329,10 +305,10 @@
                 <div class="live-demo-video">
                     <div class="video-wrapper">
                         <video id="demoVideo" loop playsinline>
-                            <source src="https://i.imgur.com/M9dfCqD.mp4" type="video/mp4">
+                            <source src="https://cdn.pixabay.com/video/2023/05/18/164949-828259816_large.mp4" type="video/mp4">
                         </video>
                         <div class="video-controls">
-                            <button class="video-btn" onclick="document.getElementById('demoVideo').play()">
+                            <button class="video-btn" id="videoPlayPauseBtn">
                                 <i class="fas fa-play"></i>
                             </button>
                         </div>
