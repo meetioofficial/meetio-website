@@ -50,7 +50,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Smooth scrolling for anchor links
+// Smooth scrolling for anchor links with header offset
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -358,22 +358,20 @@ document.addEventListener('keydown', function(e) {
 // Update footer year
 document.querySelector('.current-year').textContent = new Date().getFullYear();
 
-// Scroll effect for header
+// Scroll effect for header - FIXED: Makes header sticky and changes background when scrolling
 window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
     } else {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = 'var(--shadow-sm)';
+        header.classList.remove('scrolled');
     }
 });
 
 // Auto-play video on hero
 const heroVideo = document.querySelector('.hero-video');
 if (heroVideo) {
-    heroVideo.play();
+    heroVideo.play().catch(e => console.log('Video autoplay failed:', e));
 }
 
 // Countdown effect (simulated)
@@ -417,12 +415,8 @@ window.openFeedbackModal = openFeedbackModal;
 window.closeFeedbackModal = closeFeedbackModal;
 window.submitFeedback = submitFeedback;
 
-// Add scroll effect to change header background
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
+// Initial header state
+const header = document.querySelector('.header');
+if (window.scrollY > 50) {
+    header.classList.add('scrolled');
+}
