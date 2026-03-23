@@ -280,17 +280,26 @@ window.submitFeedback = async function(e) {
     }
 }
 
-// Video controls
-document.querySelector('.video-btn')?.addEventListener('click', function() {
-    const video = document.getElementById('demoVideo');
-    if (video.paused) {
-        video.play();
-        this.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        video.pause();
-        this.innerHTML = '<i class="fas fa-play"></i>';
-    }
-});
+// Video controls - Play/Pause functionality
+const demoVideo = document.getElementById('demoVideo');
+const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
+
+if (demoVideo && videoPlayPauseBtn) {
+    videoPlayPauseBtn.addEventListener('click', function() {
+        if (demoVideo.paused) {
+            demoVideo.play();
+            videoPlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+            demoVideo.pause();
+            videoPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+    });
+    
+    // Update button icon when video ends
+    demoVideo.addEventListener('ended', function() {
+        videoPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
+}
 
 // Confetti function
 function triggerConfetti() {
@@ -361,8 +370,11 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Auto-play video on hero (it's muted by default)
-document.querySelector('.hero-video')?.play();
+// Auto-play video on hero
+const heroVideo = document.querySelector('.hero-video');
+if (heroVideo) {
+    heroVideo.play();
+}
 
 // Countdown effect (simulated)
 let spotsLeft = 347;
