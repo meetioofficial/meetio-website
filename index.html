@@ -290,30 +290,31 @@
     </section>
 
     <!-- Live Demo Preview with YOUR Demo Video from Imgur -->
-    <section class="live-demo">
-        <div class="container">
-            <div class="live-demo-content">
-                <div class="live-demo-text">
-                    <span class="live-badge"><i class="fas fa-circle"></i> LIVE PREVIEW</span>
-                    <h2>See it in <span class="red-text">action</span></h2>
-                    <p>Watch how Sarah plans her birthday dinner in under 2 minutes</p>
-                </div>
-                <div class="live-demo-video">
-                    <div class="video-wrapper">
-                        <video id="demoVideo" loop playsinline>
-                            <!-- YOUR IMGUR DEMO VIDEO - Direct MP4 URL -->
-                            <source src="https://i.imgur.com/yqhC1Gz.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-controls">
-                            <button class="video-btn" id="videoPlayPauseBtn">
-                                <i class="fas fa-play"></i>
-                            </button>
-                        </div>
+<!-- Live Demo Preview with YOUR Demo Video from Imgur -->
+<section class="live-demo">
+    <div class="container">
+        <div class="live-demo-content">
+            <div class="live-demo-text">
+                <span class="live-badge"><i class="fas fa-circle"></i> LIVE PREVIEW</span>
+                <h2>See it in <span class="red-text">action</span></h2>
+                <p>Watch how Sarah plans her birthday dinner in under 2 minutes</p>
+            </div>
+            <div class="live-demo-video">
+                <div class="video-wrapper">
+                    <video id="demoVideo" loop playsinline>
+                        <!-- YOUR IMGUR DEMO VIDEO - Direct MP4 URL -->
+                        <source src="https://i.imgur.com/yqhC1Gz.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-controls">
+                        <button class="video-btn" id="videoPlayPauseBtn" onclick="toggleVideo()">
+                            <i class="fas fa-play"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Urgency CTA -->
     <section class="urgency-section">
