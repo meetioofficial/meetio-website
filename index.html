@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEETIO | Smart Hangout Planning</title>
-    <meta name="description" content="The decision engine for hangouts. Swipe, vote, meet IRL.">
+    <title>MEETIO | Stop Waiting. Start Living.</title>
+    <meta name="description" content="The #1 decision engine for hangouts. 76 messages → 3 swipes. Actually meet up.">
    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
    
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,27 +18,28 @@
     <link rel="stylesheet" href="style.css">
    
     <!-- Favicon -->
-    <link rel="icon" href="https://img.icons8.com/ios/100/8b5cf6/circled-m.png" type="image/png">
+    <link rel="icon" href="https://img.icons8.com/ios/100/ff0000/circled-m.png" type="image/png">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - Dark & Minimal -->
     <header class="header">
         <div class="container">
             <nav class="navbar">
                 <a href="index.html" class="logo">
                     <span class="logo-text">MEETIO</span>
+                    <span class="logo-badge">LIVE</span>
                 </a>
                
                 <ul class="nav-links">
                     <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How it works</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
                     <li><a href="#stories">Stories</a></li>
                     <li><a href="#team">Team</a></li>
                 </ul>
                
                 <div class="nav-actions">
-                    <a href="#" class="btn btn-primary" id="planBtn">
-                        <i class="fas fa-calendar-plus"></i> Plan a hangout
+                    <a href="#" class="btn btn-urgent" onclick="scrollToPlanner(); return false;">
+                        <i class="fas fa-bolt"></i> PLAN IT NOW
                     </a>
                     <button class="menu-toggle" id="menuToggle">
                         <i class="fas fa-bars"></i>
@@ -48,230 +49,348 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- HERO SECTION - Video Background with Urgent Red/Purple Overlay -->
     <section class="hero" id="home">
+        <div class="hero-video-container">
+            <!-- Replace with your actual video of friends hanging out -->
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="https://videos.pexels.com/video-files/7565584/7565584-uhd_2732_1440_25fps.mp4" type="video/mp4">
+                <!-- Fallback: friends laughing, drinking coffee, having fun -->
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        
+        <div class="container hero-content">
+            <div class="hero-badge pulse">
+                <span class="badge-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                <span class="badge-text">URGENT: YOUR FRIENDS ARE WAITING</span>
+            </div>
+            
+            <h1 class="hero-title">
+                <span class="title-line">
+                    <span class="gradient-text-purple">Swipe.</span>
+                </span>
+                <span class="title-line">
+                    <span class="gradient-text-red">Vote.</span>
+                </span>
+                <span class="title-line">
+                    <span class="gradient-text-white">Meet.</span>
+                </span>
+            </h1>
+            
+            <p class="hero-description">
+                <span class="highlight-red">76 messages</span> to decide where to eat? <span class="highlight">NO MORE.</span><br>
+                MEETIO turns chaos into connection in <span class="highlight-red">under 3 minutes</span>.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="#" class="btn btn-urgent btn-xl" onclick="scrollToPlanner(); return false;">
+                    <i class="fas fa-bolt"></i> PLAN IT NOW
+                    <span class="btn-glow"></span>
+                </a>
+                <a href="#how-it-works" class="btn btn-outline-urgent btn-xl">
+                    <i class="fas fa-eye"></i> SEE THE MAGIC
+                </a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">76 <span class="stat-arrow">→</span> <span class="stat-number-red">3</span></div>
+                    <div class="stat-label">Messages to decision</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number"><span class="stat-number-red">85%</span></div>
+                    <div class="stat-label">Less planning time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number"><span class="stat-number-red">100%</span></div>
+                    <div class="stat-label">Actual meetups</div>
+                </div>
+            </div>
+            
+            <div class="hero-scroll-indicator">
+                <span class="scroll-text">SCROLL TO ESCAPE THE CHAOS</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- URGENCY BANNER - Countdown Timer -->
+    <section class="urgency-banner">
         <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        <span class="gradient-text">Swipe.</span>
-                        <br>Vote.
-                        <br><span class="purple-text">Meet.</span>
-                    </h1>
-                    <p class="hero-description">
-                        Stop endless group chats. Create a hangout, invite friends, swipe options, and vote — all in one place. Plans that actually happen.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="#" class="btn btn-primary btn-lg" id="heroPlanBtn">
-                            <i class="fas fa-play"></i> Plan a hangout
-                        </a>
-                        <a href="#video" class="btn btn-outline btn-lg">
-                            <i class="fas fa-video"></i> Watch demo
-                        </a>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <h3>50+</h3>
-                            <p>Hangouts created</p>
-                        </div>
-                        <div class="stat">
-                            <h3>200+</h3>
-                            <p>Users</p>
-                        </div>
-                        <div class="stat">
-                            <h3>3 min</h3>
-                            <p>Average planning time</p>
-                        </div>
+            <div class="urgency-content">
+                <div class="urgency-icon">
+                    <i class="fas fa-hourglass-half fa-pulse"></i>
+                </div>
+                <div class="urgency-text">
+                    <span class="urgency-highlight">⚠️ LIMITED BETA ACCESS ⚠️</span>
+                    <span class="urgency-countdown"><span id="countdown-number">347</span> spots remaining</span>
+                </div>
+                <a href="#" class="btn btn-urgent-small" onclick="openWaitlist(); return false;">
+                    CLAIM YOUR SPOT <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE PROBLEM - Dark & Punchy -->
+    <section class="problem-section" id="features">
+        <div class="container">
+            <div class="problem-grid">
+                <div class="problem-content">
+                    <div class="section-badge-red">THE PROBLEM</div>
+                    <h2 class="section-title">Planning is <span class="red-strikethrough">broken</span></h2>
+                    <p class="problem-stat-large">4 hours <span class="stat-unit">per week</span></p>
+                    <p class="problem-description">That's how much time you waste on "where should we go?" group chats. Meanwhile, your friends are <span class="highlight-red">losing interest</span> and plans <span class="highlight-red">die</span>.</p>
+                    
+                    <div class="problem-chaos">
+                        <div class="chaos-message">where should we eat?</div>
+                        <div class="chaos-message">idk you choose</div>
+                        <div class="chaos-message">how about italian?</div>
+                        <div class="chaos-message">had that yesterday</div>
+                        <div class="chaos-message">sushi?</div>
+                        <div class="chaos-message">too expensive</div>
+                        <div class="chaos-message typing">...still typing 3 hours later</div>
                     </div>
                 </div>
-                <div class="hero-visual">
-                    <div class="phone-mockup">
-                        <div class="screen">
-                            <div class="app-preview">
-                                <div class="preview-header">
-                                    <span>Pasta Paradise</span>
-                                    <span>★★★★☆</span>
+                
+                <div class="problem-solution">
+                    <div class="solution-badge">THE SOLUTION →</div>
+                    <h2 class="section-title">MEETIO <span class="red-text">saves</span> the day</h2>
+                    
+                    <div class="solution-stats">
+                        <div class="solution-stat">
+                            <div class="solution-number">76 → 3</div>
+                            <div class="solution-label">Messages reduced to swipes</div>
+                        </div>
+                        <div class="solution-stat">
+                            <div class="solution-number">85%</div>
+                            <div class="solution-label">Faster decisions</div>
+                        </div>
+                        <div class="solution-stat">
+                            <div class="solution-number">0</div>
+                            <div class="solution-label">Endless debates</div>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-cta">
+                        <a href="#" class="btn btn-urgent" onclick="scrollToPlanner(); return false;">
+                            <i class="fas fa-bolt"></i> BREAK THE CYCLE
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS - Dark & Visual -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge-red">3 STEPS. 3 MINUTES.</div>
+                <h2 class="section-title">From chaos to <span class="red-text">connection</span></h2>
+            </div>
+            
+            <div class="works-grid">
+                <div class="works-card">
+                    <div class="works-number">01</div>
+                    <div class="works-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h3>CREATE</h3>
+                    <p>Pick mood, time & friends</p>
+                    <div class="works-preview">
+                        <span>🍕 Foodie Mode</span>
+                        <span>📅 Tonight 8pm</span>
+                        <span>👥 5 friends</span>
+                    </div>
+                </div>
+                
+                <div class="works-card">
+                    <div class="works-number">02</div>
+                    <div class="works-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>SWIPE</h3>
+                    <p>Everyone likes top 3 places</p>
+                    <div class="works-preview swipe-preview">
+                        <div class="swipe-indicator left">✗</div>
+                        <div class="swipe-indicator right">♥</div>
+                    </div>
+                </div>
+                
+                <div class="works-card">
+                    <div class="works-number">03</div>
+                    <div class="works-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>VOTE</h3>
+                    <p>Final decision. Done.</p>
+                    <div class="works-preview vote-preview">
+                        <div class="vote-bar" style="width: 80%"></div>
+                        <span>80% agree on Pasta Palace</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="works-cta">
+                <a href="#" class="btn btn-urgent btn-xl" onclick="scrollToPlanner(); return false;">
+                    <i class="fas fa-rocket"></i> PLAN YOUR HANGOUT NOW
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE DEMO - Interactive Preview -->
+    <section class="live-demo-section">
+        <div class="container">
+            <div class="demo-showcase">
+                <div class="demo-phone">
+                    <div class="phone-frame">
+                        <div class="phone-screen" id="demoScreen">
+                            <div class="demo-header">
+                                <span class="demo-time">7:41</span>
+                                <span class="demo-battery"><i class="fas fa-battery-three-quarters"></i></span>
+                            </div>
+                            <div class="demo-app">
+                                <div class="demo-mood-selector">
+                                    <button class="mood-btn active" data-mood="foodie">🍕</button>
+                                    <button class="mood-btn" data-mood="chill">☕</button>
+                                    <button class="mood-btn" data-mood="night">🌙</button>
+                                    <button class="mood-btn" data-mood="active">⚡</button>
                                 </div>
-                                <div class="preview-actions">
-                                    <div class="preview-dislike">✗</div>
-                                    <div class="preview-like">♥</div>
+                                <div class="demo-card" id="demoCard">
+                                    <div class="demo-card-image"></div>
+                                    <div class="demo-card-content">
+                                        <h4>Pasta Paradise</h4>
+                                        <div class="demo-rating">★★★★☆ 4.5</div>
+                                        <div class="demo-tags">
+                                            <span>Italian</span>
+                                            <span>$$</span>
+                                            <span>15 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="demo-actions">
+                                        <button class="demo-dislike"><i class="fas fa-times"></i></button>
+                                        <button class="demo-like"><i class="fas fa-heart"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Demo Section -->
-    <section class="demo-section" id="video">
-        <div class="container">
-            <div class="demo-header">
-                <h2>See how it works</h2>
-                <p>Watch a hangout come together in under 3 minutes</p>
-            </div>
-            <div class="video-container">
-                <div class="video-wrapper">
-                    <video id="demoVideo" poster="https://via.placeholder.com/1280x720/1a1a2e/8b5cf6?text=MEETIO+Demo" preload="metadata">
-                        <source src="https://i.imgur.com/M9dfCqD.mp4" type="video/mp4">
-                        Your browser does not support video playback.
-                    </video>
-                    <div class="video-controls">
-                        <button class="video-play-btn" id="playPauseBtn">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <div class="video-timeline">
-                            <div class="video-progress"></div>
-                        </div>
-                        <button class="video-mute-btn" id="muteBtn">
-                            <i class="fas fa-volume-up"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">How MEETIO works</h2>
-                <p class="section-subtitle">Three simple steps to a perfect hangout</p>
-            </div>
-           
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>1. Create</h3>
-                    <p>Set the mood, pick a date, and invite your friends. MEETIO handles the rest.</p>
-                </div>
-               
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h3>2. Swipe</h3>
-                    <p>Each person gets 3 likes to give to their favorite places. Simple and fair.</p>
-                </div>
-               
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3>3. Vote</h3>
-                    <p>The group votes on the top options. Final decision in minutes, not hours.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works - Detailed -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">From chaos to connection</h2>
-                <p class="section-subtitle">How MEETIO transforms your planning experience</p>
-            </div>
-           
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <div class="step-content">
-                        <h3>The Planner creates a hangout</h3>
-                        <p>Choose mood, date, time, and location radius. Invite friends in seconds.</p>
-                        <div class="step-image">
-                            <img src="images/Screenshot 2026-01-23 at 22.50.46.png" alt="Create hangout">
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="step reverse">
-                    <div class="step-number">02</div>
-                    <div class="step-content">
-                        <h3>Friends accept and swipe</h3>
-                        <p>Everyone gets 3 likes to give to recommended spots based on the chosen mood.</p>
-                        <div class="step-image">
-                            <img src="images/Screenshot 2026-01-23 at 22.52.38.png" alt="Swipe options">
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <div class="step-content">
-                        <h3>Vote and finalize</h3>
-                        <p>The group votes on the top spots. The winner becomes the official hangout.</p>
-                        <div class="step-image">
-                            <img src="images/Screenshot 2026-01-23 at 22.55.45.png" alt="Vote">
-                        </div>
-                    </div>
-                </div>
                 
-                <div class="step reverse">
-                    <div class="step-number">04</div>
-                    <div class="step-content">
-                        <h3>Everything in one dashboard</h3>
-                        <p>See location, time, directions, who's coming, and live locations — all in one place.</p>
-                        <div class="step-image">
-                            <img src="images/Screenshot 2026-01-23 at 22.56.15.png" alt="Dashboard">
+                <div class="demo-content">
+                    <div class="section-badge-red">LIVE PREVIEW</div>
+                    <h2 class="section-title">Experience it <span class="red-text">now</span></h2>
+                    <p class="demo-description">See how MEETIO transforms your planning in real-time. Swipe, vote, and decide — all in one place.</p>
+                    
+                    <div class="demo-features">
+                        <div class="demo-feature">
+                            <i class="fas fa-brain red-icon"></i>
+                            <span>AI-powered recommendations</span>
                         </div>
+                        <div class="demo-feature">
+                            <i class="fas fa-users red-icon"></i>
+                            <span>Real-time group voting</span>
+                        </div>
+                        <div class="demo-feature">
+                            <i class="fas fa-map-pin red-icon"></i>
+                            <span>Live location tracking</span>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-cta">
+                        <a href="#" class="btn btn-urgent btn-lg" onclick="scrollToPlanner(); return false;">
+                            <i class="fas fa-bolt"></i> PLAN NOW
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stories Section -->
-    <section class="stories" id="stories">
+    <!-- URGENCY TIMER - Big Red Banner -->
+    <section class="urgency-timer-section">
+        <div class="container">
+            <div class="timer-card">
+                <div class="timer-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="timer-content">
+                    <h3>Limited beta access</h3>
+                    <div class="timer-display">
+                        <div class="timer-unit">
+                            <span class="timer-number" id="hours">24</span>
+                            <span class="timer-label">Hours</span>
+                        </div>
+                        <div class="timer-unit">
+                            <span class="timer-number" id="minutes">47</span>
+                            <span class="timer-label">Minutes</span>
+                        </div>
+                        <div class="timer-unit">
+                            <span class="timer-number" id="seconds">32</span>
+                            <span class="timer-label">Seconds</span>
+                        </div>
+                    </div>
+                    <p class="timer-text"><span class="red-text">347 spots</span> remaining — 80% already claimed</p>
+                </div>
+                <a href="#" class="btn btn-urgent btn-xl" onclick="openWaitlist(); return false;">
+                    SECURE YOUR SPOT
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- STORIES - Social Proof -->
+    <section class="stories-section" id="stories">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">What users are saying</h2>
-                <p class="section-subtitle">Real stories from real hangouts</p>
+                <div class="section-badge-red">REAL STORIES</div>
+                <h2 class="section-title">They stopped <span class="red-text">texting</span> and started <span class="red-text">meeting</span></h2>
             </div>
-           
+            
             <div class="stories-grid">
                 <div class="story-card">
                     <div class="story-quote">"</div>
-                    <p class="story-text">We used to spend an hour deciding where to eat. Now it takes 3 minutes. MEETIO is a game changer.</p>
+                    <p class="story-text">We used to spend 2 hours deciding. Now it's 3 minutes. MEETIO saved our friendship.</p>
                     <div class="story-author">
                         <div class="author-avatar">
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <div class="author-info">
                             <h4>Alex Chen</h4>
-                            <p>Beta user</p>
+                            <span>Beta user, NYC</span>
                         </div>
                     </div>
                 </div>
-               
-                <div class="story-card">
+                
+                <div class="story-card featured">
                     <div class="story-quote">"</div>
-                    <p class="story-text">Finally an app that actually helps friends meet up instead of just talking about it.</p>
+                    <p class="story-text">Finally an app that actually helps us meet up instead of just talking about it.</p>
                     <div class="story-author">
                         <div class="author-avatar">
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <div class="author-info">
                             <h4>Maria Garcia</h4>
-                            <p>Beta user</p>
+                            <span>Beta user, Miami</span>
                         </div>
                     </div>
+                    <div class="story-badge">MOST RECENT</div>
                 </div>
-               
+                
                 <div class="story-card">
                     <div class="story-quote">"</div>
-                    <p class="story-text">The democratic voting system is genius. No more 'I don't care, you decide.'</p>
+                    <p class="story-text">The democratic voting system is genius. No more "I don't care, you decide."</p>
                     <div class="story-author">
                         <div class="author-avatar">
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <div class="author-info">
                             <h4>James Wilson</h4>
-                            <p>Beta user</p>
+                            <span>Beta user, London</span>
                         </div>
                     </div>
                 </div>
@@ -279,122 +398,130 @@
         </div>
     </section>
 
-    <!-- Team Section -->
-    <section class="team" id="team">
+    <!-- TEAM - Quick Intro -->
+    <section class="team-section" id="team">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Meet the team</h2>
-                <p class="section-subtitle">The people behind MEETIO</p>
-            </div>
-           
             <div class="team-grid">
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="images/unnamed copy.jpg" alt="Khouloud Chebboubi">
+                        <img src="images/unnamed copy.jpg" alt="Khouloud">
                     </div>
-                    <div class="member-info">
-                        <h3>Khouloud Chebboubi</h3>
-                        <p class="role">Founder & CEO</p>
-                        <p>AI student building tools that bring people together.</p>
-                        <div class="member-social">
-                            <a href="https://www.linkedin.com/in/khouloud-chebboubi-378717339/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
+                    <h3>Khouloud Chebboubi</h3>
+                    <p class="member-role">Founder & CEO</p>
                 </div>
-               
+                
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="images/WhatsApp Image 2025-12-09 at 18.02.12.jpeg" alt="Jheel Bharambe">
+                        <img src="images/WhatsApp Image 2025-12-09 at 18.02.12.jpeg" alt="Jheel">
                     </div>
-                    <div class="member-info">
-                        <h3>Jheel Bharambe</h3>
-                        <p class="role">Co-Founder</p>
-                        <p>AI/ML student creating smart connection experiences.</p>
-                        <div class="member-social">
-                            <a href="https://www.linkedin.com/in/jheel-bharambe-34547921a/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
+                    <h3>Jheel Bharambe</h3>
+                    <p class="member-role">Co-Founder</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Waitlist CTA -->
-    <section class="waitlist-section">
+    <!-- FINAL CTA - Maximum Urgency -->
+    <section class="final-cta">
         <div class="container">
-            <div class="waitlist-card">
-                <div class="waitlist-content">
-                    <h2>Be the first to try MEETIO</h2>
-                    <p>Join the waitlist for early access</p>
-                    <div class="waitlist-form-container">
-                        <form id="waitlistForm" class="waitlist-form">
-                            <input type="text" id="waitlistName" placeholder="Your name" required>
-                            <input type="email" id="waitlistEmail" placeholder="Your email" required>
-                            <button type="submit" class="btn btn-primary" id="submitWaitlist">
-                                Join waitlist
-                            </button>
-                        </form>
-                        <div id="waitlistSuccess" class="waitlist-success" style="display: none;">
-                            <i class="fas fa-check-circle"></i>
-                            <p>Thanks! We'll be in touch soon.</p>
-                        </div>
-                    </div>
+            <div class="cta-content">
+                <div class="cta-badge pulse">
+                    <i class="fas fa-exclamation"></i> 347 SPOTS LEFT
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <a href="index.html" class="logo">
-                        <span class="logo-text">MEETIO</span>
+                <h2 class="cta-title">Your friends are <span class="red-text">waiting</span></h2>
+                <p class="cta-subtitle">Don't let another plan die in group chat purgatory</p>
+                
+                <div class="cta-actions">
+                    <a href="#" class="btn btn-urgent btn-xxl" onclick="scrollToPlanner(); return false;">
+                        <i class="fas fa-bolt"></i> PLAN A HANGOUT NOW
+                        <span class="btn-glow"></span>
                     </a>
-                    <p class="footer-description">Smart planning for real connections.</p>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/mee_t_io/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/company/meetioofficial/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    </div>
                 </div>
-               
-                <div class="footer-col">
-                    <h4>Product</h4>
-                    <ul>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#how-it-works">How it works</a></li>
-                        <li><a href="#video">Demo</a></li>
-                    </ul>
-                </div>
-               
-                <div class="footer-col">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#stories">Stories</a></li>
-                        <li><a href="#team">Team</a></li>
-                    </ul>
-                </div>
-               
-                <div class="footer-col">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="mailto:meetioassist@gmail.com">Help Center</a></li>
-                        <li><a href="mailto:meetioofficial@gmail.com">Contact</a></li>
-                    </ul>
+                
+                <div class="cta-footnote">
+                    <i class="fas fa-shield-alt"></i> No credit card required • Free during beta
                 </div>
             </div>
-           
-            <div class="footer-bottom">
-                <p>&copy; 2026 MEETIO. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
+        </div>
+    </section>
+
+    <!-- Footer - Dark -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">MEETIO</span>
+                    <span class="copyright">© 2026</span>
                 </div>
+                
+                <div class="footer-links">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#stories">Stories</a>
+                    <a href="#team">Team</a>
+                    <a href="#" onclick="openWaitlist(); return false;">Join Beta</a>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mee_t_io/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/meetioofficial/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:meetioassist@gmail.com"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-disclaimer">
+                <p>Stop texting. Start meeting. MEETIO — the decision engine for hangouts.</p>
             </div>
         </div>
     </footer>
 
+    <!-- WAITLIST MODAL -->
+    <div id="waitlistModal" class="modal">
+        <div class="modal-content dark-modal">
+            <button class="modal-close" onclick="closeWaitlist()">&times;</button>
+            
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h2>Secure your <span class="red-text">beta spot</span></h2>
+                <p class="modal-subtitle"><span class="countdown-highlight">347 spots</span> remaining — don't miss out</p>
+            </div>
+            
+            <form id="waitlistForm" class="waitlist-form">
+                <div class="form-group">
+                    <input type="text" id="waitlistName" class="form-input" placeholder="Your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="waitlistEmail" class="form-input" placeholder="Your email" required>
+                </div>
+                
+                <button type="submit" class="btn btn-urgent btn-full" id="submitWaitlist">
+                    <span class="btn-text">CLAIM MY SPOT</span>
+                    <span class="btn-loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i> PROCESSING...</span>
+                </button>
+                
+                <div class="form-footer">
+                    <p><i class="fas fa-lock"></i> We'll never spam you. Unsubscribe anytime.</p>
+                </div>
+            </form>
+            
+            <div id="waitlistSuccess" class="waitlist-success" style="display: none;">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3>YOU'RE IN! 🎉</h3>
+                <p>Check your email for beta access details</p>
+                <button class="btn btn-urgent" onclick="closeWaitlist()">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLANNER SECTION (Hidden anchor for "PLAN IT NOW" button) -->
+    <div id="planner" style="position: relative; top: -100px;"></div>
+
+    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>
