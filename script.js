@@ -416,3 +416,13 @@ window.closeMinimalWaitlist = closeMinimalWaitlist;
 window.openFeedbackModal = openFeedbackModal;
 window.closeFeedbackModal = closeFeedbackModal;
 window.submitFeedback = submitFeedback;
+
+// Add scroll effect to change header background
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
