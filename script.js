@@ -23,13 +23,11 @@ mobileMenu.className = 'mobile-menu';
 
 mobileMenu.innerHTML = `
     <ul>
-        <li><a href="#home">Home</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#testimonials">Stories</a></li>
+        <li><a href="#stories">Stories</a></li>
         <li><a href="#team">Team</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#" onclick="openTryAppModal(); return false;" style="color: var(--red); font-weight: 700;">Try Demo</a></li>
+        <li><a href="#" onclick="scrollToPlanner(); return false;" style="color: #ff0000;">PLAN IT NOW</a></li>
     </ul>
 `;
 
@@ -50,107 +48,124 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-       
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-       
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            const headerHeight = document.querySelector('.header').offsetHeight;
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-           
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
+// Scroll to planner function
+window.scrollToPlanner = function() {
+    const planner = document.getElementById('planner');
+    if (planner) {
+        planner.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Also open waitlist modal
+    setTimeout(() => {
+        openWaitlist();
+    }, 500);
+};
+
+// Countdown Timer
+let spotsLeft = 347;
+const countdownElement = document.getElementById('countdown-number');
+if (countdownElement) {
+    setInterval(() => {
+        if (spotsLeft > 0 && Math.random() > 0.7) {
+            spotsLeft--;
+            countdownElement.textContent = spotsLeft;
+            
+            // Update all countdown displays
+            document.querySelectorAll('.countdown-highlight, .urgency-countdown').forEach(el => {
+                if (el.id !== 'countdown-number') {
+                    el.innerHTML = spotsLeft + ' spots';
+                }
             });
         }
-    });
-});
-
-// Try App Modal Functions
-let currentDemoStep = 1;
-
-window.openTryAppModal = function() {
-    const modal = document.getElementById('tryAppModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        currentDemoStep = 1;
-        updateDemoStep();
-    }
+    }, 30000); // Update every 30 seconds
 }
 
-window.closeTryAppModal = function() {
-    const modal = document.getElementById('tryAppModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-window.nextDemoStep = function() {
-    if (currentDemoStep < 3) {
-        currentDemoStep++;
-        updateDemoStep();
-    }
-}
-
-window.prevDemoStep = function() {
-    if (currentDemoStep > 1) {
-        currentDemoStep--;
-        updateDemoStep();
-    }
-}
-
-function updateDemoStep() {
-    // Update step indicators
-    document.querySelectorAll('.try-app-step').forEach((step, index) => {
-        if (index + 1 === currentDemoStep) {
-            step.classList.add('active');
-        } else {
-            step.classList.remove('active');
+// Timer countdown (hours, minutes, seconds)
+function updateTimer() {
+    const hours = document.getElementById('hours');
+    const minutes = document.getElementById('minutes');
+    const seconds = document.getElementById('seconds');
+    
+    if (hours && minutes && seconds) {
+        // Simulate countdown (in reality, you'd set an end date)
+        let h = 24;
+        let m = 47;
+        let s = parseInt(seconds.textContent) || 32;
+        
+        s--;
+        if (s < 0) {
+            s = 59;
+            m--;
+            if (m < 0) {
+                m = 59;
+                h--;
+                if (h < 0) {
+                    h = 24;
+                }
+            }
         }
-    });
-    
-    // Update demo content
-    document.getElementById('step1Demo').style.display = currentDemoStep === 1 ? 'block' : 'none';
-    document.getElementById('step2Demo').style.display = currentDemoStep === 2 ? 'block' : 'none';
-    document.getElementById('step3Demo').style.display = currentDemoStep === 3 ? 'block' : 'none';
-    
-    // Update buttons
-    document.getElementById('prevDemoBtn').disabled = currentDemoStep === 1;
-    document.getElementById('nextDemoBtn').textContent = currentDemoStep === 3 ? 'Finish' : 'Next Step';
+        
+        hours.textContent = h.toString().padStart(2, '0');
+        minutes.textContent = m.toString().padStart(2, '0');
+        seconds.textContent = s.toString().padStart(2, '0');
+    }
 }
 
-// Make step clicks work
-document.querySelectorAll('.try-app-step').forEach((step, index) => {
-    step.addEventListener('click', () => {
-        currentDemoStep = index + 1;
-        updateDemoStep();
-    });
-});
+setInterval(updateTimer, 1000);
 
-// Mood selector
+// Demo interaction
 document.querySelectorAll('.mood-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
+        
+        // Change demo card based on mood
+        const demoCard = document.getElementById('demoCard');
+        const mood = this.dataset.mood;
+        
+        const places = {
+            foodie: { name: 'Pasta Paradise', cuisine: 'Italian', price: '$$' },
+            chill: { name: 'Coffee Haven', cuisine: 'Cafe', price: '$' },
+            night: { name: 'Sky Lounge', cuisine: 'Cocktails', price: '$$$' },
+            active: { name: 'Adventure Park', cuisine: 'Activities', price: '$$' }
+        };
+        
+        if (demoCard && places[mood]) {
+            const place = places[mood];
+            demoCard.querySelector('h4').textContent = place.name;
+            demoCard.querySelector('.demo-tags span:first-child').textContent = place.cuisine;
+        }
     });
 });
 
-// Waitlist Functions
-window.openMinimalWaitlist = function() {
-    const modal = document.getElementById('minimalWaitlistModal');
+// Like/Dislike demo
+document.querySelector('.demo-like')?.addEventListener('click', function() {
+    this.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        this.style.transform = 'scale(1)';
+        // Simulate new card
+        alert('Liked! (Demo mode)');
+    }, 200);
+});
+
+document.querySelector('.demo-dislike')?.addEventListener('click', function() {
+    this.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        this.style.transform = 'scale(1)';
+        // Simulate new card
+        alert('Disliked! (Demo mode)');
+    }, 200);
+});
+
+// Waitlist Modal Functions
+window.openWaitlist = function() {
+    const modal = document.getElementById('waitlistModal');
     if (modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         
         // Reset form
-        const form = document.getElementById('minimalWaitlistForm');
+        const form = document.getElementById('waitlistForm');
         const success = document.getElementById('waitlistSuccess');
         if (form) {
             form.reset();
@@ -158,18 +173,18 @@ window.openMinimalWaitlist = function() {
         }
         if (success) success.style.display = 'none';
     }
-}
+};
 
-window.closeMinimalWaitlist = function() {
-    const modal = document.getElementById('minimalWaitlistModal');
+window.closeWaitlist = function() {
+    const modal = document.getElementById('waitlistModal');
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-}
+};
 
 // Waitlist form submission
-document.getElementById('minimalWaitlistForm').addEventListener('submit', async function(e) {
+document.getElementById('waitlistForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const name = document.getElementById('waitlistName').value.trim();
@@ -188,7 +203,7 @@ document.getElementById('minimalWaitlistForm').addEventListener('submit', async 
     }
     
     // Show loading
-    const submitBtn = document.getElementById('submitWaitlistBtn');
+    const submitBtn = document.getElementById('submitWaitlist');
     const btnText = submitBtn.querySelector('.btn-text');
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
@@ -202,16 +217,22 @@ document.getElementById('minimalWaitlistForm').addEventListener('submit', async 
             name: name,
             email: email,
             timestamp: serverTimestamp(),
-            source: 'website',
+            source: 'website_urgent',
             notified: false
         });
         
         // Show success
-        document.getElementById('minimalWaitlistForm').style.display = 'none';
+        document.getElementById('waitlistForm').style.display = 'none';
         document.getElementById('waitlistSuccess').style.display = 'block';
         
         // Trigger confetti
         triggerConfetti();
+        
+        // Decrease spots counter
+        if (spotsLeft > 0) {
+            spotsLeft--;
+            document.getElementById('countdown-number').textContent = spotsLeft;
+        }
         
     } catch (error) {
         console.error('Error:', error);
@@ -224,79 +245,11 @@ document.getElementById('minimalWaitlistForm').addEventListener('submit', async 
     }
 });
 
-// Feedback Functions
-window.openFeedbackModal = function() {
-    const modal = document.getElementById('feedbackModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-window.closeFeedbackModal = function() {
-    const modal = document.getElementById('feedbackModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-// Feedback form submission
-window.submitFeedback = async function(e) {
-    e.preventDefault();
-    
-    const message = document.getElementById('feedbackMessage').value.trim();
-    const email = document.getElementById('feedbackEmail').value.trim();
-    const type = document.querySelector('input[name="type"]:checked').value;
-    
-    if (!message) {
-        alert('Please enter your feedback');
-        return;
-    }
-    
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-    
-    try {
-        await addDoc(collection(db, 'feedback'), {
-            message: message,
-            email: email || null,
-            type: type,
-            timestamp: serverTimestamp(),
-            reviewed: false
-        });
-        
-        alert('Thank you for your feedback!');
-        closeFeedbackModal();
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Something went wrong. Please try again.');
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Video controls
-document.querySelector('.video-btn')?.addEventListener('click', function() {
-    const video = document.getElementById('demoVideo');
-    if (video.paused) {
-        video.play();
-        this.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        video.pause();
-        this.innerHTML = '<i class="fas fa-play"></i>';
-    }
-});
-
 // Confetti function
 function triggerConfetti() {
-    const colors = ['#ff3b3c', '#2f017e', '#ff6b6b'];
+    const colors = ['#ff0000', '#8b5cf6', '#ffffff'];
     
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 50; i++) {
         setTimeout(() => {
             const confetti = document.createElement('div');
             confetti.style.position = 'fixed';
@@ -308,72 +261,56 @@ function triggerConfetti() {
             confetti.style.left = Math.random() * 100 + 'vw';
             confetti.style.top = '-20px';
             confetti.style.pointerEvents = 'none';
+            confetti.style.boxShadow = '0 0 10px currentColor';
             
             document.body.appendChild(confetti);
             
             const animation = confetti.animate([
                 { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                { transform: `translateY(${window.innerHeight + 100}px) rotate(${360}deg)`, opacity: 0 }
+                { transform: `translateY(${window.innerHeight + 100}px) rotate(${720}deg)`, opacity: 0 }
             ], {
                 duration: 2000 + Math.random() * 2000,
                 easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
             });
             
             animation.onfinish = () => confetti.remove();
-        }, i * 100);
+        }, i * 50);
     }
 }
 
-// Close modals on outside click
-document.getElementById('tryAppModal')?.addEventListener('click', function(e) {
-    if (e.target === this) closeTryAppModal();
-});
-
-document.getElementById('minimalWaitlistModal')?.addEventListener('click', function(e) {
-    if (e.target === this) closeMinimalWaitlist();
-});
-
-document.getElementById('feedbackModal')?.addEventListener('click', function(e) {
-    if (e.target === this) closeFeedbackModal();
+// Close modal on outside click
+document.getElementById('waitlistModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeWaitlist();
+    }
 });
 
 // Close with Escape key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        closeTryAppModal();
-        closeMinimalWaitlist();
-        closeFeedbackModal();
+        closeWaitlist();
     }
 });
 
 // Update footer year
-document.querySelector('.current-year').textContent = new Date().getFullYear();
+document.querySelector('.current-year')?.addAttribute ? 
+    document.querySelector('.current-year').textContent = new Date().getFullYear() : 
+    null;
 
 // Scroll effect for header
 window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
     if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+        header.style.background = 'rgba(0, 0, 0, 0.98)';
+        header.style.borderBottom = '1px solid #ff0000';
     } else {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-        header.style.boxShadow = 'var(--shadow-sm)';
+        header.style.background = 'rgba(0, 0, 0, 0.95)';
+        header.style.borderBottom = '1px solid rgba(255, 0, 0, 0.2)';
     }
 });
 
-// Auto-play video on hero (it's muted by default)
+// Auto-play hero video
 document.querySelector('.hero-video')?.play();
-
-// Countdown effect (simulated)
-let spotsLeft = 347;
-setInterval(() => {
-    if (spotsLeft > 0 && Math.random() > 0.7) {
-        spotsLeft--;
-        document.querySelectorAll('.countdown-badge').forEach(badge => {
-            badge.innerHTML = `<i class="fas fa-users"></i> ${spotsLeft} spots left`;
-        });
-    }
-}, 30000); // Update every 30 seconds
 
 // Add animation on scroll
 const observerOptions = {
@@ -384,23 +321,42 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in-up');
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-document.querySelectorAll('.feature-card, .works-step, .story-card, .team-member').forEach(el => {
+document.querySelectorAll('.works-card, .story-card, .team-member').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s ease';
     observer.observe(el);
 });
 
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
 // Make functions globally available
-window.openTryAppModal = openTryAppModal;
-window.closeTryAppModal = closeTryAppModal;
-window.nextDemoStep = nextDemoStep;
-window.prevDemoStep = prevDemoStep;
-window.openMinimalWaitlist = openMinimalWaitlist;
-window.closeMinimalWaitlist = closeMinimalWaitlist;
-window.openFeedbackModal = openFeedbackModal;
-window.closeFeedbackModal = closeFeedbackModal;
-window.submitFeedback = submitFeedback;
+window.openWaitlist = openWaitlist;
+window.closeWaitlist = closeWaitlist;
+window.scrollToPlanner = scrollToPlanner;
