@@ -55,7 +55,6 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -203,31 +202,30 @@ p {
     font-size: 0.875rem;
 }
 
-/* Header - Fixed/Sticky Implementation */
+/* Header - Hide on Scroll */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background: transparent;
-    backdrop-filter: none;
     z-index: 1000;
     padding: 1.5rem 0;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease;
+    transform: translateY(0);
 }
 
-/* Header when scrolled - becomes solid background */
+/* Header hidden when scrolling down */
+.header.hide {
+    transform: translateY(-100%);
+}
+
+/* Header when scrolled - becomes solid background when visible */
 .header.scrolled {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
     padding: 1rem 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Optional: Header with solid background for better visibility */
-.header.solid {
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
 }
 
 .navbar {
