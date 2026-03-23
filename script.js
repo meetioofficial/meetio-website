@@ -50,7 +50,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Smooth scrolling for anchor links with fixed header offset
+// Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -60,7 +60,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
        
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
-            const headerHeight = 70; // Fixed header height
+            const headerHeight = document.querySelector('.header').offsetHeight;
             const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
            
             window.scrollTo({
@@ -68,10 +68,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 behavior: 'smooth'
             });
         }
-        
-        // Close mobile menu if open
-        mobileMenu.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
     });
 });
 
@@ -100,9 +96,6 @@ window.nextDemoStep = function() {
     if (currentDemoStep < 3) {
         currentDemoStep++;
         updateDemoStep();
-    } else {
-        closeTryAppModal();
-        openMinimalWaitlist();
     }
 }
 
@@ -129,10 +122,8 @@ function updateDemoStep() {
     document.getElementById('step3Demo').style.display = currentDemoStep === 3 ? 'block' : 'none';
     
     // Update buttons
-    const prevBtn = document.getElementById('prevDemoBtn');
-    const nextBtn = document.getElementById('nextDemoBtn');
-    if (prevBtn) prevBtn.disabled = currentDemoStep === 1;
-    if (nextBtn) nextBtn.textContent = currentDemoStep === 3 ? 'Finish' : 'Next Step';
+    document.getElementById('prevDemoBtn').disabled = currentDemoStep === 1;
+    document.getElementById('nextDemoBtn').textContent = currentDemoStep === 3 ? 'Finish' : 'Next Step';
 }
 
 // Make step clicks work
@@ -367,10 +358,22 @@ document.addEventListener('keydown', function(e) {
 // Update footer year
 document.querySelector('.current-year').textContent = new Date().getFullYear();
 
+// Scroll effect for header
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 100) {
+        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+    } else {
+        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.boxShadow = 'var(--shadow-sm)';
+    }
+});
+
 // Auto-play video on hero
 const heroVideo = document.querySelector('.hero-video');
 if (heroVideo) {
-    heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
+    heroVideo.play();
 }
 
 // Countdown effect (simulated)
@@ -379,10 +382,10 @@ setInterval(() => {
     if (spotsLeft > 0 && Math.random() > 0.7) {
         spotsLeft--;
         document.querySelectorAll('.countdown-badge').forEach(badge => {
-            if (badge) badge.innerHTML = `<i class="fas fa-users"></i> ${spotsLeft} spots left`;
+            badge.innerHTML = `<i class="fas fa-users"></i> ${spotsLeft} spots left`;
         });
     }
-}, 30000);
+}, 30000); // Update every 30 seconds
 
 // Add animation on scroll
 const observerOptions = {
@@ -393,17 +396,13 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('fade-in-up');
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
 document.querySelectorAll('.feature-card, .works-step, .story-card, .team-member').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
 });
 
@@ -417,3 +416,13 @@ window.closeMinimalWaitlist = closeMinimalWaitlist;
 window.openFeedbackModal = openFeedbackModal;
 window.closeFeedbackModal = closeFeedbackModal;
 window.submitFeedback = submitFeedback;
+
+// Add scroll effect to change header background
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
