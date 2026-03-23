@@ -203,6 +203,7 @@ p {
 }
 
 /* Header - Hide on Scroll */
+/* Header - Transparent and scrolls away with page */
 .header {
     position: relative;
     width: 100%;
@@ -211,15 +212,7 @@ p {
     z-index: 1000;
 }
 
-/* Optional: When scrolled, header can have different style but still scrolls away */
-.header.scrolled {
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Header when scrolled - becomes solid background when visible */
+/* Optional: This class will be applied when scrolled but header still scrolls away */
 .header.scrolled {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
