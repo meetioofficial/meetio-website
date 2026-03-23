@@ -282,8 +282,38 @@ window.submitFeedback = async function(e) {
 
 // Video controls - Play/Pause functionality
 // Video controls - Play/Pause functionality
+// Video controls - Play/Pause functionality
 const demoVideo = document.getElementById('demoVideo');
 const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
+
+if (demoVideo && videoPlayPauseBtn) {
+    // Set initial icon based on video state
+    function updateButtonIcon() {
+        if (demoVideo.paused) {
+            videoPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            videoPlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+    }
+    
+    // Initial icon state
+    updateButtonIcon();
+    
+    // Play/Pause on click
+    videoPlayPauseBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (demoVideo.paused) {
+            demoVideo.play().catch(err => console.log('Playback failed:', err));
+        } else {
+            demoVideo.pause();
+        }
+    });
+    
+    // Update icon on video events
+    demoVideo.addEventListener('play', updateButtonIcon);
+    demoVideo.addEventListener('pause', updateButtonIcon);
+    demoVideo.addEventListener('ended', updateButtonIcon);
+}const videoPlayPauseBtn = document.getElementById('videoPlayPauseBtn');
 
 if (demoVideo && videoPlayPauseBtn) {
     // Remove any existing event listeners by replacing with a new one
