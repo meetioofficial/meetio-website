@@ -359,47 +359,15 @@ document.addEventListener('keydown', function(e) {
 document.querySelector('.current-year').textContent = new Date().getFullYear();
 
 // Header Hide on Scroll - with direction detection
-let lastScrollTop = 0;
-let scrollTimeout;
-const header = document.querySelector('.header');
-
+// Simple scroll effect for header background (optional)
 window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Clear timeout
-    clearTimeout(scrollTimeout);
-    
-    // Determine scroll direction
-    if (currentScroll > lastScrollTop && currentScroll > 100) {
-        // Scrolling down - hide header
-        header.classList.add('hide');
-        header.classList.remove('scrolled');
-    } else if (currentScroll < lastScrollTop) {
-        // Scrolling up - show header
-        header.classList.remove('hide');
-        // Add scrolled class if not at top
-        if (currentScroll > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    } else if (currentScroll <= 50) {
-        // At the top - show header without scrolled class
-        header.classList.remove('hide');
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
         header.classList.remove('scrolled');
     }
-    
-    // Set timeout to show header when scrolling stops (optional)
-    scrollTimeout = setTimeout(() => {
-        if (currentScroll > 100 && !header.classList.contains('hide')) {
-            // Optional: hide after stop scrolling? 
-            // Keep current behavior
-        }
-    }, 150);
-    
-    lastScrollTop = currentScroll;
 });
-
 // Auto-play video on hero
 const heroVideo = document.querySelector('.hero-video');
 if (heroVideo) {
