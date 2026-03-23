@@ -48,10 +48,14 @@
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
+    
+    /* Header Height */
+    --header-height: 80px;
 }
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -199,7 +203,7 @@ p {
     font-size: 0.875rem;
 }
 
-/* Header - Transparent Background */
+/* Header - Fixed/Sticky Implementation */
 .header {
     position: fixed;
     top: 0;
@@ -212,12 +216,18 @@ p {
     transition: all 0.3s ease;
 }
 
-/* Header when scrolled */
+/* Header when scrolled - becomes solid background */
 .header.scrolled {
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
     padding: 1rem 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Header with solid background for better visibility */
+.header.solid {
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -302,7 +312,7 @@ p {
     cursor: pointer;
 }
 
-/* Hero Section with Video - Full Screen - Mobile Optimized */
+/* Hero Section with Video - Full Screen */
 .hero {
     position: relative;
     min-height: 100vh;
@@ -312,6 +322,7 @@ p {
     justify-content: center;
     overflow: hidden;
     color: white;
+    margin-top: 0;
 }
 
 .hero-video-container {
@@ -344,7 +355,7 @@ p {
     position: relative;
     z-index: 2;
     width: 100%;
-    padding-top: 80px;
+    padding-top: var(--header-height);
     padding-bottom: 40px;
 }
 
@@ -1295,7 +1306,7 @@ p {
 /* Mobile Menu */
 .mobile-menu {
     position: fixed;
-    top: 80px;
+    top: var(--header-height);
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.95);
@@ -1338,6 +1349,10 @@ p {
 
 /* Responsive - Hero Mobile Optimized */
 @media (max-width: 1024px) {
+    :root {
+        --header-height: 70px;
+    }
+    
     h1 { font-size: 3.5rem; }
     h2 { font-size: 2rem; }
     
@@ -1375,6 +1390,10 @@ p {
 }
 
 @media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+    
     .container {
         padding: 0 1.5rem;
     }
@@ -1391,7 +1410,7 @@ p {
     .hero {
         min-height: 100vh;
         height: auto;
-        padding: 80px 0 60px;
+        padding: 0;
     }
     
     .hero-title {
@@ -1442,8 +1461,8 @@ p {
     }
     
     .hero-content {
-        padding-top: 60px;
-        padding-bottom: 20px;
+        padding-top: calc(var(--header-height) + 20px);
+        padding-bottom: 40px;
     }
     
     .features-grid {
@@ -1534,7 +1553,12 @@ p {
 @media (max-height: 600px) and (orientation: landscape) {
     .hero {
         min-height: auto;
-        padding: 100px 0 40px;
+        padding: 0;
+    }
+    
+    .hero-content {
+        padding-top: calc(var(--header-height) + 20px);
+        padding-bottom: 20px;
     }
     
     .hero-title {
