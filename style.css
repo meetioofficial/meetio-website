@@ -204,20 +204,19 @@ p {
 
 /* Header - Hide on Scroll */
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     background: transparent;
-    z-index: 1000;
     padding: 1.5rem 0;
-    transition: transform 0.3s ease, background 0.3s ease;
-    transform: translateY(0);
+    z-index: 1000;
 }
 
-/* Header hidden when scrolling down */
-.header.hide {
-    transform: translateY(-100%);
+/* Optional: When scrolled, header can have different style but still scrolls away */
+.header.scrolled {
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Header when scrolled - becomes solid background when visible */
