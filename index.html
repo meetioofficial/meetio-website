@@ -667,13 +667,15 @@
   if (!mobileMenu) {
     mobileMenu = document.createElement('div');
     mobileMenu.className = 'mobile-menu';
-    mobileMenu.innerHTML = `<ul><li><a href="#home" onclick="closeMobileMenu()">Home</a></li><li><a href="#features" onclick="closeMobileMenu()">Features</a></li><li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li><li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li><li><a href="#team" onclick="closeMobileMenu()">Team</a></li><li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li><li><a href="#" onclick="openTryAppModal(); closeMobileMenu(); return false;" style="color: var(--red);">Try Demo</a></li></ul>`;
+    // REMOVED "Try Demo" from the menu
+    mobileMenu.innerHTML = `<ul><li><a href="#home" onclick="closeMobileMenu()">Home</a></li><li><a href="#features" onclick="closeMobileMenu()">Features</a></li><li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li><li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li><li><a href="#team" onclick="closeMobileMenu()">Team</a></li><li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li></ul>`;
     document.body.appendChild(mobileMenu);
   }
   
   // Close mobile menu function
   window.closeMobileMenu = function() {
     if (mobileMenu) mobileMenu.classList.remove('active');
+    // ALWAYS keep the three lines icon
     if (menuToggle) {
       menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
     }
@@ -691,11 +693,8 @@
       e.stopPropagation();
       if (mobileMenu) {
         mobileMenu.classList.toggle('active');
-        if (mobileMenu.classList.contains('active')) {
-          newMenuToggle.innerHTML = '<i class="fas fa-times"></i>';
-        } else {
-          newMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-        }
+        // ALWAYS keep the three lines icon, never change to X
+        newMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
       }
     });
   }
@@ -706,6 +705,7 @@
     if (currentMenuToggle && mobileMenu && !currentMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
       if (mobileMenu.classList.contains('active')) {
         mobileMenu.classList.remove('active');
+        // ALWAYS keep the three lines icon
         currentMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
       }
     }
