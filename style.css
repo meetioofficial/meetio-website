@@ -2139,3 +2139,67 @@ p {
         transform: translateY(0);
     }
 }
+
+
+/* Minimal Notification */
+.mini-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 10001;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    border-left: 3px solid;
+}
+
+.mini-notification.show {
+    transform: translateX(0);
+}
+
+.mini-notification.success {
+    border-left-color: #10b981;
+    color: #10b981;
+}
+
+.mini-notification.success i {
+    color: #10b981;
+}
+
+.mini-notification.error {
+    border-left-color: #ff3b3c;
+    color: #ff3b3c;
+}
+
+.mini-notification.error i {
+    color: #ff3b3c;
+}
+
+.mini-notification i {
+    font-size: 1.1rem;
+}
+
+.mini-notification span {
+    color: #1f2937;
+}
+
+@media (max-width: 640px) {
+    .mini-notification {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        transform: translateY(100px);
+    }
+    
+    .mini-notification.show {
+        transform: translateY(0);
+    }
+}
