@@ -584,20 +584,50 @@
     const message = document.getElementById('feedbackMessage').value.trim();
     const email = document.getElementById('feedbackEmail').value.trim();
     const type = document.querySelector('input[name="type"]:checked').value;
-    if (!message) { alert('Please enter your feedback'); return; }
+    if (!message) { 
+      showNotification('Please enter your feedback', 'error');
+      return; 
+    }
     const btn = event.target.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
     btn.textContent = 'Sending...';
     btn.disabled = true;
     try {
       await addDoc(collection(db, 'feedback'), { message, email: email || null, type, timestamp: serverTimestamp(), reviewed: false });
-      alert('Thank you for your feedback!');
+      showNotification('Thanks for your feedback', 'success');
       document.getElementById('feedbackModal').style.display = 'none';
       document.body.style.overflow = 'auto';
       document.getElementById('feedbackForm').reset();
-    } catch (error) { alert('Something went wrong. Please try again.'); }
+    } catch (error) { 
+      showNotification('Something went wrong', 'error');
+    }
     finally { btn.textContent = originalText; btn.disabled = false; }
   };
+
+  // Notification function
+  function showNotification(message, type) {
+    // Remove existing notification if any
+    const existingNotif = document.querySelector('.mini-notification');
+    if (existingNotif) existingNotif.remove();
+    
+    // Create notification element
+    const notif = document.createElement('div');
+    notif.className = `mini-notification ${type}`;
+    notif.innerHTML = `
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+      <span>${message}</span>
+    `;
+    document.body.appendChild(notif);
+    
+    // Animate in
+    setTimeout(() => notif.classList.add('show'), 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notif.classList.remove('show');
+      setTimeout(() => notif.remove(), 300);
+    }, 3000);
+  }
 
   window.openMinimalWaitlist = function() {
     const modal = document.getElementById('minimalWaitlistModal');
