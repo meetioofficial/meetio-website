@@ -1939,3 +1939,62 @@ p {
     }
 }
 
+
+/* Feedback CTA Section - Minimal */
+.feedback-cta-section {
+    padding: 4rem 0;
+    background: var(--bg-white);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feedback-cta-card {
+    background: transparent;
+}
+
+.feedback-cta-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.feedback-cta-text h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-dark);
+}
+
+.feedback-cta-text p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.feedback-cta-content .btn-outline {
+    border-color: var(--red);
+    color: var(--red);
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+    background: transparent;
+}
+
+.feedback-cta-content .btn-outline:hover {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+}
+
+@media (max-width: 768px) {
+    .feedback-cta-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .feedback-cta-text h3 {
+        font-size: 1.125rem;
+    }
+}
+
