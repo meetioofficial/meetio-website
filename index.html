@@ -659,57 +659,66 @@
   document.getElementById('feedbackModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeFeedbackModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeTryAppModal(); closeMinimalWaitlist(); closeFeedbackModal(); } });
 
-   // Mobile Menu Setup - FIXED VERSION
-  const menuToggle = document.getElementById('menuToggle');
-  
-  // Check if mobile menu already exists, if not create it
-  let mobileMenu = document.querySelector('.mobile-menu');
-  if (!mobileMenu) {
+// Mobile Menu Toggle - FIXED VERSION (Icon stays as 3 lines)
+const menuToggle = document.getElementById('menuToggle');
+
+// Check if mobile menu already exists, if not create it
+let mobileMenu = document.querySelector('.mobile-menu');
+if (!mobileMenu) {
     mobileMenu = document.createElement('div');
     mobileMenu.className = 'mobile-menu';
-    // REMOVED "Try Demo" from the menu
-    mobileMenu.innerHTML = `<ul><li><a href="#home" onclick="closeMobileMenu()">Home</a></li><li><a href="#features" onclick="closeMobileMenu()">Features</a></li><li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li><li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li><li><a href="#team" onclick="closeMobileMenu()">Team</a></li><li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li></ul>`;
+    // NO "Try Demo" in the menu
+    mobileMenu.innerHTML = `
+        <ul>
+            <li><a href="#home" onclick="closeMobileMenu()">Home</a></li>
+            <li><a href="#features" onclick="closeMobileMenu()">Features</a></li>
+            <li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li>
+            <li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li>
+            <li><a href="#team" onclick="closeMobileMenu()">Team</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+    `;
     document.body.appendChild(mobileMenu);
-  }
-  
-  // Close mobile menu function
-  window.closeMobileMenu = function() {
+}
+
+// Close mobile menu function
+window.closeMobileMenu = function() {
     if (mobileMenu) mobileMenu.classList.remove('active');
     // ALWAYS keep the three lines icon
     if (menuToggle) {
-      menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
     }
-  };
-  
-  // Remove any existing event listeners by replacing the button
-  if (menuToggle) {
+};
+
+// Remove any existing event listeners by replacing the button
+if (menuToggle) {
     // Clone and replace to remove old event listeners
     const newMenuToggle = menuToggle.cloneNode(true);
     menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
     
     // Add fresh click event listener
-    newMenuToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
-        // ALWAYS keep the three lines icon, never change to X
-        newMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      }
+    newMenuToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (mobileMenu) {
+            mobileMenu.classList.toggle('active');
+            // ALWAYS keep the three lines icon - NEVER change to X
+            newMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
     });
-  }
-  
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', function(e) {
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
     const currentMenuToggle = document.getElementById('menuToggle');
     if (currentMenuToggle && mobileMenu && !currentMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
-      if (mobileMenu.classList.contains('active')) {
-        mobileMenu.classList.remove('active');
-        // ALWAYS keep the three lines icon
-        currentMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      }
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            // ALWAYS keep the three lines icon
+            currentMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
     }
-  });
+});
 
   // Smooth scrolling for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
