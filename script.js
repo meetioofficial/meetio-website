@@ -23,17 +23,24 @@ mobileMenu.className = 'mobile-menu';
 
 mobileMenu.innerHTML = `
     <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#testimonials">Stories</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#" onclick="openTryAppModal(); return false;" style="color: var(--red); font-weight: 700;">Try Demo</a></li>
+        <li><a href="#home" onclick="closeMobileMenu()">Home</a></li>
+        <li><a href="#features" onclick="closeMobileMenu()">Features</a></li>
+        <li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li>
+        <li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li>
+        <li><a href="#team" onclick="closeMobileMenu()">Team</a></li>
+        <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+        <li><a href="#" onclick="openTryAppModal(); closeMobileMenu(); return false;" style="color: var(--red); font-weight: 700;">Try Demo</a></li>
     </ul>
 `;
 
 document.body.appendChild(mobileMenu);
+// Close mobile menu function
+window.closeMobileMenu = function() {
+    mobileMenu.classList.remove('active');
+    if (menuToggle) {
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+};
 
 menuToggle.addEventListener('click', () => {
     mobileMenu.classList.toggle('active');
@@ -44,25 +51,24 @@ menuToggle.addEventListener('click', () => {
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (!menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    if (menuToggle && mobileMenu && !menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+        closeMobileMenu();
     }
 });
 
 // Smooth scrolling for anchor links with header offset
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-       
         const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-       
+        if (targetId === '#' || targetId === '') return;
+        
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
-            const headerHeight = document.querySelector('.header').offsetHeight;
+            e.preventDefault();
+            const header = document.querySelector('.header');
+            const headerHeight = header ? header.offsetHeight : 80;
             const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-           
+            
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
