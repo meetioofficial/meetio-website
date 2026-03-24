@@ -2257,3 +2257,25 @@ p {
         top: 70px;
     }
 }
+
+/* Make hamburger menu visible on all screen sizes for testing */
+.menu-toggle {
+    display: block !important;
+}
+
+/* Hide desktop navigation on mobile */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+}
+
+/* For desktop, you can keep both or hide mobile menu button */
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: none !important;
+    }
+    .nav-links {
+        display: flex !important;
+    }
+}
