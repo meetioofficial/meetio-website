@@ -535,36 +535,22 @@
         </div>
     </div>
 
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" class="feedback-modal">
-        <div class="feedback-modal-content">
-            <button class="close-feedback-modal" onclick="closeFeedbackModal()">×</button>
-            <h3>Share your thoughts</h3>
-            <p>Help us make MEETIO better</p>
-           
-            <form id="feedbackForm" onsubmit="submitFeedback(event)">
-                <div class="form-group">
-                    <textarea id="feedbackMessage" placeholder="What would you like to tell us?" rows="4" required></textarea>
+ <!-- Feedback CTA Section - Minimal -->
+<section class="feedback-cta-section">
+    <div class="container">
+        <div class="feedback-cta-card">
+            <div class="feedback-cta-content">
+                <div class="feedback-cta-text">
+                    <h3>Share your <span class="red-text">feedback</span></h3>
+                    <p>Help us improve MEETIO — we read every message.</p>
                 </div>
-               
-                <div class="form-group">
-                    <input type="email" id="feedbackEmail" placeholder="Your email (optional)">
-                </div>
-               
-                <div class="feedback-type">
-                    <label>
-                        <input type="radio" name="type" value="suggestion" checked> Suggestion
-                    </label>
-                    <label>
-                        <input type="radio" name="type" value="bug"> Bug Report
-                    </label>
-                </div>
-               
-                <button type="submit" class="btn btn-red submit-feedback-btn">Send Feedback</button>
-            </form>
+                <button class="btn btn-outline" onclick="openFeedbackModal(); return false;">
+                    <i class="fas fa-comment"></i> Send Feedback
+                </button>
+            </div>
         </div>
     </div>
-
+</section>
     <!-- Scripts -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
