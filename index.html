@@ -659,5 +659,37 @@
   const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('fade-in-up'); }); }, { threshold: 0.1 });
   document.querySelectorAll('.feature-card, .works-step, .story-card, .team-member').forEach(el => observer.observe(el));
 </script>
+        <!-- Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal">
+        <div class="feedback-modal-content">
+            <button class="close-feedback-modal" onclick="closeFeedbackModal()">&times;</button>
+            <div class="feedback-modal-header">
+                <div class="feedback-modal-icon">
+                    <i class="fas fa-comment-dots"></i>
+                </div>
+                <h3>Share your feedback</h3>
+                <p>Help us make MEETIO better</p>
+            </div>
+            <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                <div class="feedback-form-group">
+                    <textarea id="feedbackMessage" placeholder="What would you like to tell us?" rows="4" required></textarea>
+                </div>
+                <div class="feedback-form-group">
+                    <input type="email" id="feedbackEmail" placeholder="Your email (optional)">
+                </div>
+                <div class="feedback-type-group">
+                    <label class="feedback-radio">
+                        <input type="radio" name="type" value="suggestion" checked> Suggestion
+                    </label>
+                    <label class="feedback-radio">
+                        <input type="radio" name="type" value="bug"> Bug Report
+                    </label>
+                </div>
+                <button type="submit" class="feedback-submit-btn">
+                    Send Feedback
+                </button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
