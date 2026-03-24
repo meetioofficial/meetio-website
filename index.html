@@ -496,8 +496,8 @@
                 <p>Join 347 others waiting for MEETIO</p>
             </div>
            
-            <form id="minimalWaitlistForm" class="minimal-waitlist-form">
-                <div class="form-group">
+<form id="minimalWaitlistForm" class="minimal-waitlist-form" onsubmit="submitToWaitlist(event)">
+    <div class="form-group">
                     <input type="text" id="waitlistName" class="form-input" placeholder="Your name" required>
                 </div>
                
@@ -559,6 +559,129 @@
     </div>
 
     <!-- Scripts -->
-   <script src="script.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOwk37TCbc_loEb-LFXLK3qWQBdOaaqlU",
+    authDomain: "meeto-website.firebaseapp.com",
+    projectId: "meeto-website",
+    storageBucket: "meeto-website.firebasestorage.app",
+    messagingSenderId: "950489624932",
+    appId: "1:950489624932:web:65f005771901f763e64a71",
+    measurementId: "G-TVM3G555P5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.submitToWaitlist = async function(event) {
+    event.preventDefault();
+    const name = document.getElementById('waitlistName').value.trim();
+    const email = document.getElementById('waitlistEmail').value.trim();
+    if (!name || !email) { alert('Please fill in all fields'); return; }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) { alert('Please enter a valid email address'); return; }
+    const btn = document.getElementById('submitWaitlistBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    btn.disabled = true;
+    try {
+      await addDoc(collection(db, 'waitlist'), { name, email, timestamp: serverTimestamp(), source: 'website', notified: false });
+      document.getElementById('minimalWaitlistForm').style.display = 'none';
+      document.getElementById('waitlistSuccess').style.display = 'block';
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.style.cssText = `position: fixed; width: 8px; height: 8px; background: #ff3b3c; border-radius: 50%; left: ${Math.random() * 100}vw; top: -20px; pointer-events: none; z-index: 10001;`;
+          document.body.appendChild(confetti);
+          confetti.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: `translateY(${window.innerHeight + 100}px)`, opacity: 0 }], { duration: 2000 + Math.random() * 1000 });
+          setTimeout(() => confetti.remove(), 2500);
+        }, i * 50);
+      }
+    } catch (error) { alert('Something went wrong. Please try again.'); btn.innerHTML = originalText; btn.disabled = false; }
+  };
+
+  window.submitFeedback = async function(event) {
+    event.preventDefault();
+    const message = document.getElementById('feedbackMessage').value.trim();
+    const email = document.getElementById('feedbackEmail').value.trim();
+    const type = document.querySelector('input[name="type"]:checked').value;
+    if (!message) { alert('Please enter your feedback'); return; }
+    const btn = event.target.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      await addDoc(collection(db, 'feedback'), { message, email: email || null, type, timestamp: serverTimestamp(), reviewed: false });
+      alert('Thank you for your feedback!');
+      document.getElementById('feedbackModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      document.getElementById('feedbackForm').reset();
+    } catch (error) { alert('Something went wrong. Please try again.'); }
+    finally { btn.textContent = originalText; btn.disabled = false; }
+  };
+
+  window.openMinimalWaitlist = function() {
+    const modal = document.getElementById('minimalWaitlistModal');
+    if (modal) { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('minimalWaitlistForm').style.display = 'block'; document.getElementById('waitlistSuccess').style.display = 'none'; document.getElementById('minimalWaitlistForm').reset(); }
+  };
+  window.closeMinimalWaitlist = function() {
+    const modal = document.getElementById('minimalWaitlistModal');
+    if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+  };
+  window.openFeedbackModal = function() {
+    const modal = document.getElementById('feedbackModal');
+    if (modal) { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('feedbackForm').reset(); }
+  };
+  window.closeFeedbackModal = function() {
+    const modal = document.getElementById('feedbackModal');
+    if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+  };
+  window.openTryAppModal = function() {
+    const modal = document.getElementById('tryAppModal');
+    if (modal) { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  };
+  window.closeTryAppModal = function() {
+    const modal = document.getElementById('tryAppModal');
+    if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+  };
+
+  document.getElementById('tryAppModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeTryAppModal(); });
+  document.getElementById('minimalWaitlistModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeMinimalWaitlist(); });
+  document.getElementById('feedbackModal')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeFeedbackModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeTryAppModal(); closeMinimalWaitlist(); closeFeedbackModal(); } });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.createElement('div');
+  mobileMenu.className = 'mobile-menu';
+  mobileMenu.innerHTML = `<ul><li><a href="#home" onclick="closeMobileMenu()">Home</a></li><li><a href="#features" onclick="closeMobileMenu()">Features</a></li><li><a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a></li><li><a href="#testimonials" onclick="closeMobileMenu()">Stories</a></li><li><a href="#team" onclick="closeMobileMenu()">Team</a></li><li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li><li><a href="#" onclick="openTryAppModal(); closeMobileMenu(); return false;" style="color: var(--red);">Try Demo</a></li></ul>`;
+  document.body.appendChild(mobileMenu);
+  window.closeMobileMenu = function() { mobileMenu.classList.remove('active'); if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>'; };
+  if (menuToggle) { menuToggle.addEventListener('click', () => { mobileMenu.classList.toggle('active'); menuToggle.innerHTML = mobileMenu.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>'; }); }
+  document.addEventListener('click', (e) => { if (menuToggle && !menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) { mobileMenu.classList.remove('active'); menuToggle.innerHTML = '<i class="fas fa-bars"></i>'; } });
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const href = this.getAttribute('href'); if (href === '#') return; const target = document.querySelector(href); if (target) { e.preventDefault(); const header = document.querySelector('.header'); const offset = header ? header.offsetHeight : 80; target.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => { window.scrollBy(0, -offset); }, 100); } }); });
+
+  const header = document.querySelector('.header');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => { const currentScroll = window.pageYOffset; if (currentScroll > 50) { header.classList.add('scrolled'); } else { header.classList.remove('scrolled'); } if (currentScroll > lastScroll && currentScroll > 100) { header.classList.add('hide'); } else { header.classList.remove('hide'); } lastScroll = currentScroll; });
+
+  const heroVideo = document.querySelector('.hero-video'); if (heroVideo) heroVideo.play().catch(() => {});
+  const demoVideo = document.getElementById('demoVideo'); if (demoVideo) demoVideo.play().catch(() => {});
+  document.querySelector('.current-year').textContent = new Date().getFullYear();
+
+  let currentDemoStep = 1;
+  window.nextDemoStep = function() { if (currentDemoStep < 3) { currentDemoStep++; updateDemoStep(); } else if (currentDemoStep === 3) { closeTryAppModal(); openMinimalWaitlist(); } };
+  window.prevDemoStep = function() { if (currentDemoStep > 1) { currentDemoStep--; updateDemoStep(); } };
+  function updateDemoStep() { document.querySelectorAll('.try-app-step').forEach((step, i) => { if (i + 1 === currentDemoStep) step.classList.add('active'); else step.classList.remove('active'); }); document.getElementById('step1Demo').style.display = currentDemoStep === 1 ? 'block' : 'none'; document.getElementById('step2Demo').style.display = currentDemoStep === 2 ? 'block' : 'none'; document.getElementById('step3Demo').style.display = currentDemoStep === 3 ? 'block' : 'none'; const prevBtn = document.getElementById('prevDemoBtn'); const nextBtn = document.getElementById('nextDemoBtn'); if (prevBtn) prevBtn.disabled = currentDemoStep === 1; if (nextBtn) nextBtn.textContent = currentDemoStep === 3 ? 'Join Waitlist' : 'Next Step'; }
+  document.querySelectorAll('.try-app-step').forEach((step, idx) => { step.addEventListener('click', () => { currentDemoStep = idx + 1; updateDemoStep(); }); });
+  document.querySelectorAll('.mood-btn').forEach(btn => { btn.addEventListener('click', function() { document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); }); });
+  updateDemoStep();
+
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('fade-in-up'); }); }, { threshold: 0.1 });
+  document.querySelectorAll('.feature-card, .works-step, .story-card, .team-member').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
